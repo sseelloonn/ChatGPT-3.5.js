@@ -6,7 +6,7 @@
         body {
             margin: 0px;
             padding: 0px;
-            background: url(./img/background3.jpg);
+            /*background: url(./img/background3.jpg);*/
             background-position: center;
             background-size: cover;
             background-attachment: fixed;
@@ -84,7 +84,7 @@
 
     <meta charset="UTF-8">
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
-    <title>Chat-GPT-3.5 turbo (由GPT-3.5 turbo 开放接口实现)</title>
+    <title>Chat</title>
     <script src="./js/axios.min.js"></script>
 </head>
 
@@ -92,7 +92,8 @@
     <div id="app">
         <div class="title">Chat-GPT-3.5 turbo</div>
         <textarea id="res"
-            placeholder="欢迎使用ChatGPT智能AI客服,本项目基于GPT-3.5 turbo接口开发,能够实现与ChatGPT类似的持续性对话功能,AI将记忆并结合语境对话。点击发送按钮发送问题,点击清空按钮清除历史记录。"></textarea>
+            placeholder="欢迎使用ChatGPT智能AI客服,点击发送按钮发送问题,点击清空按钮清除历史记录。">
+		</textarea>
         <div class="promptText">请输入需要查询的内容：(使用/help指令获取更多帮助) </div>
         <div class="inputbox">
             <textarea id="inputbox" autofocus required type="text" cols="100" rows="2"
@@ -112,15 +113,14 @@
         window.pp = 0;
         window.mode = "true";
         window.csize = 30;
-        window.username = "user";
+        window.username = "我";
         const textarea = window.document.getElementById("res");
         const inputbox = window.document.getElementById("inputbox");
         var histories = [];
-        addText("欢迎使用ChatGPT智能AI客服,本项目基于GPT-3.5 turbo接口开发,能够实现与ChatGPT类似的持续性对话功能,AI将记忆并结合语境对话。点击发送按钮发送问题,点击清空按钮清除历史记录。");
         if (getCookie("apikey") != undefined && getCookie("apikey") != "") {
             window.apikey = getCookie("apikey");
         } else {
-            window.apikey = prompt("请在输入框内输入并提交您从官方网站获取的apikey:");
+            window.apikey = prompt("请输入您在openai官方网站获取的apikey:");
             setCookie("apikey", window.apikey);
         }
         if (getCookie("prompt") != undefined) {
@@ -215,7 +215,7 @@
                 histories.slice(-window.csize);
             }
             histories.push({ "role": window.username, "content": intputtext });
-            addText(window.username + "说：\n\n" + intputtext);
+            addText(window.username + "问：\n\n" + intputtext);
             textarea.value += '\n正在请求数据......';
             textarea.scrollTop = textarea.scrollHeight;
             const question = JSON.parse(JSON.stringify(histories));
@@ -235,10 +235,10 @@
             ).then(response => {
                 removeLine();
                 let resultstring = response.data.choices[0].message.content;
-                let resultname = response.data.choices[0].message.role;
+                let resultname = 'AI';//response.data.choices[0].message.role;
                 let result = { "role": resultname, "content": resultstring };
                 histories.push(result);
-                addText(resultname + "说:\n\n" + resultstring);
+                addText(resultname + "回答:\n\n" + resultstring);
                 inputbox.value = "";
             }).catch(error => {
                 removeLine();
