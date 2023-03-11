@@ -112,7 +112,7 @@
         window.pp = 0;
         window.mode = "true";
         window.csize = 30;
-        window.username = "我";
+        window.username = "user";
         const textarea = window.document.getElementById("res");
         const inputbox = window.document.getElementById("inputbox");
         var histories = [];
@@ -214,7 +214,7 @@
                 histories.slice(-window.csize);
             }
             histories.push({ "role": window.username, "content": intputtext });
-            addText(window.username + "问：\n\n" + intputtext);
+            addText("问：\n" + intputtext);
             textarea.value += '\n正在请求数据......';
             textarea.scrollTop = textarea.scrollHeight;
             const question = JSON.parse(JSON.stringify(histories));
@@ -234,10 +234,10 @@
             ).then(response => {
                 removeLine();
                 let resultstring = response.data.choices[0].message.content;
-                let resultname = 'AI';//response.data.choices[0].message.role;
+                let resultname = response.data.choices[0].message.role;
                 let result = { "role": resultname, "content": resultstring };
                 histories.push(result);
-                addText(resultname + "回答:\n\n" + resultstring);
+                addText("AI回答：\n" + resultstring);
                 inputbox.value = "";
             }).catch(error => {
                 removeLine();
