@@ -242,7 +242,7 @@
                 inputbox.value = "";
             }).catch(error => {
                 removeLine();
-                console.log(error);
+                console.log(error+'\n请确认是否已经科学上网！');
                 alert("服务器报错:\n" + error);
             });
 
